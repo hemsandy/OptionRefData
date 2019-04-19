@@ -1,6 +1,8 @@
 package com.wf.refdata.publisher;
 
 /**
+ * Publishes Option Reference data to the configured Topic
+ *
  * Created by hems on 18/04/19.
  */
 
@@ -31,14 +33,18 @@ public class RefDataPublisher {
     private AppProperties appProperties;
 
     public void sendToTopic(OptionData optionData) {
-        log.info("sending toTopic() <" + optionData.toJSONString() + ">");
-        jmsTemplate.send(appProperties.getTopicName(), new MessageCreator() {
-            @Override
-            public Message createMessage(Session session) throws JMSException {
-                Message textMessage = session.createTextMessage(optionData.toJSONString());
-                return textMessage;
-            }
-        });
+        if(jmsTemplate == null) {
+            log.error("MQ Connection Not Available - jmsTemplate null");
+        }else {
+            log.info("sending toTopic() <" + optionData.toJSONString() + ">");
+            jmsTemplate.send(appProperties.getTopicName(), new MessageCreator() {
+                @Override
+                public Message createMessage(Session session) throws JMSException {
+                    Message textMessage = session.createTextMessage(optionData.toJSONString());
+                    return textMessage;
+                }
+            });
+        }
     }
 
     public JmsTemplate getJmsTemplate() {

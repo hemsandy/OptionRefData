@@ -29,19 +29,25 @@ public class ClientApplication implements ApplicationRunner{
 	@Autowired
 	CSVDataReader csvDataReader;
 
+	@Autowired
+	AppProperties appProperties;
+
 	private static Logger log = LoggerFactory.getLogger(ClientApplication.class);
 
 
 	@Override
 	public void run(ApplicationArguments applicationArguments) throws Exception {
 		publishOptionData();
+
 	}
 
 	private void publishOptionData() {
 
 		log.info("Publishing RefData to Topic..Start");
+		log.debug(appProperties.getDateFormat() + "-" + appProperties.getJmsUrl()
+				+ "-" + appProperties.getOptionDataFile() + "-" + appProperties.getTopicName());
 		try {
-			List<OptionData> optionDataList = csvDataReader.parseFile("OptionData.csv");
+			List<OptionData> optionDataList = csvDataReader.parseFile(appProperties.getOptionDataFile());
 			if (optionDataList != null && !optionDataList.isEmpty()) {
 				Iterator<OptionData> iterator = optionDataList.iterator();
 				while (iterator.hasNext()) {
