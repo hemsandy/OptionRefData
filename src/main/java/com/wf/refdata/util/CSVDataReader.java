@@ -1,9 +1,6 @@
 package com.wf.refdata.util;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -27,10 +24,9 @@ public class CSVDataReader {
 		OptionData data = null;
 		List<OptionData> optionDataList = new ArrayList();
 		try{
-			String fileToRead = getClass().getClassLoader().getResource(fileName).getFile();
-			File file = new File(fileToRead);
-			Reader in = new FileReader(file);
-			parser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(in);
+			InputStreamReader inputStreamReader = new InputStreamReader(getClass()
+					.getClassLoader().getResourceAsStream(fileName));
+			parser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
 		}catch(IOException ioe){
 			ioe.printStackTrace();
 		}
