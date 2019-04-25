@@ -46,6 +46,15 @@
 </dependencies>
 
 <build>
+    <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+            <excludes>
+                <exclude>**/*</exclude>
+            </excludes>
+        </resource>
+    </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -53,6 +62,8 @@
                 <configuration>
                     <fork>true</fork>
                     <mainClass>com.wf.refdata.ClientApplication</mainClass>
+                    <layout>ZIP</layout>
+                    <addResources>false</addResources>
                 </configuration>
                   <executions>
                     <execution>

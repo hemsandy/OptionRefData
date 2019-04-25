@@ -24,8 +24,11 @@ public class CSVDataReader {
 		OptionData data = null;
 		List<OptionData> optionDataList = new ArrayList();
 		try{
-			InputStreamReader inputStreamReader = new InputStreamReader(getClass()
-					.getClassLoader().getResourceAsStream(fileName));
+//			InputStreamReader inputStreamReader = new InputStreamReader(getClass()
+//					.getClassLoader().getResourceAsStream(fileName));
+			File file = new File(fileName);
+			FileInputStream inputStream = new FileInputStream(file);
+			InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
 			parser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(inputStreamReader);
 		}catch(IOException ioe){
 			ioe.printStackTrace();
