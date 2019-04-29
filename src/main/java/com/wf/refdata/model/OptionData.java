@@ -55,6 +55,7 @@ public class OptionData {
 
 	public void setOptionName(String optionName) {
 		this.optionName = optionName;
+		this.stockName = optionName.substring(0,4);
 	}
 
 	public double getStrike() {
@@ -81,7 +82,7 @@ public class OptionData {
 		this.expiryDate = expiryDate;
 	}
 
-	public static DateTimeFormatter formatter =  DateTimeFormatter.ofPattern("MM/dd/yyyy");
+	public static DateTimeFormatter formatter =  DateTimeFormatter.ofPattern("yyyy-mm-DD[ HH][:mm][:ss][ SSSS]");
 
 	public static Gson gson  = new GsonBuilder()
 			.registerTypeAdapter(LocalDate.class, new JsonSerializer<LocalDate>(){

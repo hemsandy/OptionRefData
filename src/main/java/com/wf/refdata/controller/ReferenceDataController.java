@@ -10,9 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.wf.refdata.model.OptionData;
 import com.wf.refdata.util.CSVDataReader;
@@ -29,6 +27,11 @@ public class ReferenceDataController {
 	@RequestMapping(value="/option" , method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<OptionData> getData() throws IOException{
 		return optionDataStore.getOptionDataList();
+	}
+
+	@RequestMapping(value="/option/{symbol}" , method=RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<OptionData> getData(@PathVariable(value ="symbol",required = false) String symbol) throws IOException{
+		return optionDataStore.getOptionData(symbol);
 	}
 
 	public OptionDataStore getOptionDataStore() {

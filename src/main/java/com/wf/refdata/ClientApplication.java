@@ -31,8 +31,8 @@ public class ClientApplication implements ApplicationRunner{
 	@Autowired
 	OptionDataStore optionDataStore;
 
-	@Autowired
-	PriceTickSubscriber priceTickSubscriber;
+	//@Autowired
+	//PriceTickSubscriber priceTickSubscriber;
 
 	private static Logger log = LoggerFactory.getLogger(ClientApplication.class);
 

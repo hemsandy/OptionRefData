@@ -21,13 +21,13 @@ import java.time.format.DateTimeFormatter;
 /**
  * Created by hems on 26/04/19.
  */
-@EnableJms
-@Component
+//@EnableJms
+//@Component
 public class PriceTickSubscriber {
 
     private static Logger log = LoggerFactory.getLogger(PriceTickSubscriber.class);
 
-    @Autowired
+    //@Autowired
     private PriceTickEventHandler priceTickEventHandler;
 
     @Autowired
@@ -35,20 +35,8 @@ public class PriceTickSubscriber {
 
     public static DateTimeFormatter formatter =  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss SSS");
 
-    public static Gson gson  = new GsonBuilder()
-            .registerTypeAdapter(LocalDateTime.class, new JsonSerializer<LocalDateTime>(){
 
-                public JsonElement serialize(LocalDateTime localDateTime, Type typeOfSrc,
-                                             JsonSerializationContext context) {
-                    return new JsonPrimitive(formatter.format(localDateTime));
-                }
-            }).registerTypeAdapter(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
-                public LocalDateTime deserialize(JsonElement json, Type typeOfT,
-                                                 JsonDeserializationContext context) throws JsonParseException {
-                    LocalDateTime dt = LocalDateTime.parse(json.getAsString(),formatter);
-                    return dt;
-                }
-            }).create();
+
 
     @JmsListener(destination = "${cmt.options.refdata.queueNameForTickPrice}")
     public void receiveMessage(final Message jsonMessage) throws JMSException {
@@ -59,7 +47,7 @@ public class PriceTickSubscriber {
                 String payLoad = textMessage.getText();
                 log.debug("Payload: {} ", payLoad);
 
-                Stock stock = gson.fromJson(payLoad, Stock.class);
+                Stock stock = Stock.gson.fromJson(payLoad, Stock.class);
 
                 priceTickEventHandler.handleEvent(stock);
 

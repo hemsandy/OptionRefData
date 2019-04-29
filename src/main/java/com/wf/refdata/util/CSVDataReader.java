@@ -4,6 +4,7 @@ import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +48,7 @@ public class CSVDataReader {
 		log.info("File read.. {} records found", optionDataList.size());
 		return optionDataList;
 	}
+	public static DateTimeFormatter formatter =  DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
 	private OptionData mapRecord(CSVRecord record) {
 		LocalDate expiryDate = null;
@@ -58,7 +60,7 @@ public class CSVDataReader {
 		}
 		
 		try{
-			expiryDate = LocalDate.parse(record.get(11), OptionData.formatter);
+			expiryDate = LocalDate.parse(record.get(11), formatter);
 		}catch(Exception pe){
 			log.error("Exception parsing expiryDate {} ", expiryDate, pe);
 		}
