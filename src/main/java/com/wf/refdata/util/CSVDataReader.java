@@ -11,14 +11,20 @@ import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.wf.refdata.model.OptionData;
 
 @Component
 public class CSVDataReader {
-	
+
+	private static Logger log = LoggerFactory.getLogger(CSVDataReader.class);
+
+
 	public List<OptionData> parseFile(String fileName){
+		log.info("parseFile.. {}", fileName);
 		String fileContents="";
 		CSVParser parser = null;
 		OptionData data = null;
@@ -38,6 +44,7 @@ public class CSVDataReader {
 			if(data != null)
 				optionDataList.add(data);
 		}
+		log.info("File read.. {} records found", optionDataList.size());
 		return optionDataList;
 	}
 
@@ -53,10 +60,10 @@ public class CSVDataReader {
 		try{
 			expiryDate = LocalDate.parse(record.get(11), OptionData.formatter);
 		}catch(Exception pe){
-			pe.printStackTrace();
+			log.error("Exception parsing expiryDate {} ", expiryDate, pe);
 		}
 		
-		OptionData data = new OptionData(record.get(0), strike, volatility, expiryDate);
+		OptionData data = new OptionData(record.get(0), strike, volatility, expiryDate,0.0);
 		return data;
 	}
 	

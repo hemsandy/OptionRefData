@@ -12,6 +12,7 @@ import com.wf.refdata.util.AppProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,8 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 
-
 @Service
+@EnableJms
 public class RefDataPublisher {
 
     private static Logger log = LoggerFactory.getLogger(RefDataPublisher.class);
@@ -32,12 +33,14 @@ public class RefDataPublisher {
     @Autowired
     private AppProperties appProperties;
 
+
     public void sendToTopic(OptionData optionData) {
+        log.info("sending optionData to topic");
         if(jmsTemplate == null) {
             log.error("MQ Connection Not Available - jmsTemplate null");
         }else {
             log.info("sending toTopic() <" + optionData.toJSONString() + ">");
-            jmsTemplate.send(appProperties.getTopicName(), new MessageCreator() {
+            jmsTemplate.send(appProperties.getTopicNameForOptionData(), new MessageCreator() {
                 @Override
                 public Message createMessage(Session session) throws JMSException {
                     Message textMessage = session.createTextMessage(optionData.toJSONString());
@@ -62,6 +65,7 @@ public class RefDataPublisher {
     public void setAppProperties(AppProperties appProperties) {
         this.appProperties = appProperties;
     }
+
 }
 
 

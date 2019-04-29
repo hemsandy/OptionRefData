@@ -2,6 +2,8 @@ package com.wf.refdata;
 
 import com.wf.refdata.model.OptionData;
 import com.wf.refdata.publisher.RefDataPublisher;
+import com.wf.refdata.store.OptionDataStore;
+import com.wf.refdata.subscriber.PriceTickSubscriber;
 import com.wf.refdata.util.AppProperties;
 import com.wf.refdata.util.CSVDataReader;
 import org.slf4j.Logger;
@@ -24,28 +26,31 @@ import java.util.List;
 public class ClientApplication implements ApplicationRunner{
 
 	@Autowired
-	RefDataPublisher refDataPublisher;
-
-	@Autowired
-	CSVDataReader csvDataReader;
-
-	@Autowired
 	AppProperties appProperties;
+
+	@Autowired
+	OptionDataStore optionDataStore;
+
+	@Autowired
+	PriceTickSubscriber priceTickSubscriber;
 
 	private static Logger log = LoggerFactory.getLogger(ClientApplication.class);
 
 
 	@Override
 	public void run(ApplicationArguments applicationArguments) throws Exception {
-		publishOptionData();
+
+		optionDataStore.loadStore();
+
+		//publishOptionData();
 
 	}
 
-	private void publishOptionData() {
+	/*private void publishOptionData() {
 
 		log.info("Publishing RefData to Topic..Start");
 		log.debug(appProperties.getDateFormat() + "-" + appProperties.getJmsUrl()
-				+ "-" + appProperties.getOptionDataFile() + "-" + appProperties.getTopicName());
+				+ "-" + appProperties.getOptionDataFile() + "-" + appProperties.getTopicNameForOptionData());
 		try {
 			List<OptionData> optionDataList = csvDataReader.parseFile(appProperties.getOptionDataFile());
 			if (optionDataList != null && !optionDataList.isEmpty()) {
@@ -58,23 +63,9 @@ public class ClientApplication implements ApplicationRunner{
 			log.error("Exception occured while publishing OptionData(RefData) to jms Topic", ex);
 		}
 		log.info("Publishing RefData to Topic..End");
-	}
+	}*/
 
-	public RefDataPublisher getRefDataPublisher() {
-		return refDataPublisher;
-	}
 
-	public void setRefDataPublisher(RefDataPublisher refDataPublisher) {
-		this.refDataPublisher = refDataPublisher;
-	}
-
-	public CSVDataReader getCsvDataReader() {
-		return csvDataReader;
-	}
-
-	public void setCsvDataReader(CSVDataReader csvDataReader) {
-		this.csvDataReader = csvDataReader;
-	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(ClientApplication.class, args);

@@ -9,7 +9,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class AppProperties {
 
     private String jmsUrl;
-    private String topicName;
+    private String topicNameForRefData;
+    private String topicNameForOptionData;
+    private String queueNameForTickPrice;
     private String optionDataFile;
     private String dateFormat;
 
@@ -22,12 +24,20 @@ public class AppProperties {
         this.jmsUrl = jmsUrl;
     }
 
-    public String getTopicName() {
-        return topicName;
+    public String getTopicNameForRefData() {
+        return topicNameForRefData;
     }
 
-    public void setTopicName(String topicName) {
-        this.topicName = topicName;
+    public void setTopicNameForRefData(String topicNameForRefData) {
+        this.topicNameForRefData = topicNameForRefData;
+    }
+
+    public String getTopicNameForOptionData() {
+        return topicNameForOptionData;
+    }
+
+    public void setTopicNameForOptionData(String topicNameForOptionData) {
+        this.topicNameForOptionData = topicNameForOptionData;
     }
 
     public String getOptionDataFile() {
@@ -44,5 +54,13 @@ public class AppProperties {
 
     public void setDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
+    }
+
+    public String getQueueNameForTickPrice() {
+        return queueNameForTickPrice;
+    }
+
+    public void setQueueNameForTickPrice(String queueNameForTickPrice) {
+        this.queueNameForTickPrice = queueNameForTickPrice;
     }
 }

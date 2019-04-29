@@ -3,17 +3,20 @@ package com.wf.refdata.model;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 
 public class OptionData {
+
 	private String optionName;
 	private double strike;
 	private double volatility;
 	private LocalDate expiryDate;
-	
+	private double stockPrice;
+
+	private String stockName;
+
 	public OptionData(){
 		
 	}
@@ -21,6 +24,7 @@ public class OptionData {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
+		sb.append("Stock Name : "+ stockPrice + " -- ");
 		sb.append("Contract Name : "+optionName + " -- ");
 		sb.append("Expiry Date : "+expiryDate + " -- ");
 		sb.append("Strike : "+strike + " -- ");
@@ -28,11 +32,21 @@ public class OptionData {
 		return sb.toString();
 	}
 
-	public OptionData(String optionName,double strike, double voloatility, LocalDate expiry ){
+	public OptionData(String optionName,double strike, double voloatility, LocalDate expiry,double stockPrice ){
+		this.stockPrice = stockPrice;
 		this.optionName = optionName;
 		this.strike = strike;
 		this.volatility = voloatility;
 		this.expiryDate = expiry;
+		this.stockName = optionName.substring(0,4);
+	}
+
+	public double getStockPrice() {
+		return stockPrice;
+	}
+
+	public void setStockPrice(double stockPrice) {
+		this.stockPrice = stockPrice;
 	}
 
 	public String getOptionName() {
@@ -98,5 +112,9 @@ public class OptionData {
 		}
 
 		return optionData;
+	}
+
+	public String getStockName() {
+		return this.stockName;
 	}
 }
